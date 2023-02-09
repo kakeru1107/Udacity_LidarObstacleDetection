@@ -146,19 +146,22 @@ std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT
     return segResult;
 }
 
+template<typename PointT>
 void clusterHelper(typename pcl::PointCloud<PointT>::Ptr cloud, std::vector<bool>& processedPoints, int index, typename pcl::PointCloud<PointT>::Ptr cluster, KdTree* tree, float clusterTolerance)
 {
 
-	processed[indice] = true;
-	cluster.push_back(indice);
+    processedPoints[index] = true;
+    cluster->push_back(cloud->points[index]);
 
-	std::vector<int> nearest = tree->search(points[indice], distanceTol);
-
-	for(int id : nearest)
-	{
-		if(!processed[id])
-			clusterHelper(id, points, cluster, processed, tree, distanceTol);
-	}
+    PointT point = cloud->points[index];
+    std::vector<int> proximity = tree->search({point.x, point.y, point.z}, clusterTolerance);
+    for (int id : proximity)
+    {
+        if (!processedPoints[id])
+        {
+            clusterHelper(cloud, processedPoints, id, cluster, tree, clusterTolerance);
+        }
+    }
 }
 
 
