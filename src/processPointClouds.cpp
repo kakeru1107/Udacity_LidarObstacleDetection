@@ -146,6 +146,26 @@ std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT
     return segResult;
 }
 
+template<typename PointT>
+void clusterHelper(typename pcl::PointCloud<PointT>::Ptr cloud, std::vector<bool>& processedPoints, int index, typename pcl::PointCloud<PointT>::Ptr cluster, KdTree* tree, float clusterTolerance)
+{
+/*
+    processedPoints[index] = true;
+    cluster->push_back(cloud->points[index]);
+
+    PointT point = cloud->points[index];
+    std::vector<int> proximity = tree->search({point.x, point.y, point.z}, clusterTolerance);
+    for (int id : proximity)
+    {
+        if (!processedPoints[id])
+        {
+            clusterHelper(cloud, processedPoints, id, cluster, tree, clusterTolerance);
+        }
+    }
+*/
+}
+
+
 
 template<typename PointT>
 std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::Clustering_withEuclidean(typename pcl::PointCloud<PointT>::Ptr cloud, float clusterTolerance, int minSize, int maxSize)
